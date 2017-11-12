@@ -8,12 +8,15 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import org.apache.commons.io.FileUtils;
 
 import java.io.File;
+import java.io.IOException;
 
 
 public class TextSplitter extends Application {
@@ -28,9 +31,14 @@ public class TextSplitter extends Application {
     private TextField outputFileTF;
     @FXML
     private Button processBT;
+    @FXML
+    private TextArea inputPrevTA;
+    @FXML
+    private TextArea outputPrevTA;
 
     private File inputFile;
     private File outputFile;
+    private String inputContent;
 
     /**
      * The main entry point for all JavaFX applications.
@@ -64,8 +72,17 @@ public class TextSplitter extends Application {
     void onInputFileButtonClick(ActionEvent e) {
         FileChooser chooser = new FileChooser();
         inputFile = chooser.showOpenDialog(window);
+        outputPrevTA.clear();
         if (inputFile != null) {
             inputFileTF.setText(inputFile.getAbsolutePath());
+            try {
+                inputContent = FileUtils.readFileToString(inputFile, "UTF-8");
+                inputPrevTA.setText(inputContent);
+            } catch (IOException ex) {
+                inputPrevTA.setText("Cannot load file preview");
+            }
+        } else {
+            inputPrevTA.clear();
         }
     }
 
@@ -80,6 +97,7 @@ public class TextSplitter extends Application {
 
     @FXML
     void onProcessButtonClick(ActionEvent e) {
+        outputPrevTA.clear();
         if (inputFile == null || !inputFile.isFile()) {
             showDialog("Chose input file!", "Input file error");
             return;
@@ -89,10 +107,13 @@ public class TextSplitter extends Application {
             return;
         }
         try {
-            TextProcessor textProcessor = new TextProcessor(inputFile, outputFile);
-            textProcessor.process();
+            TextProcessor textProcessor = new TextProcessor(inputContent, outputFile);
+            String result = textProcessor.process()
+                    .orElse("Output not available");
+            outputPrevTA.setText(result);
         } catch (Exception ex) {
-            ex.printStackTrace();
+            // TODO - change to some error message
+            outputPrevTA.setText(ex.getMessage());
         }
     }
 

@@ -1,17 +1,18 @@
 package com.pw.eiti.wedt;
 
-import org.w3c.dom.Document;
-
 import java.io.File;
-import java.util.Collections;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Optional;
+import java.util.logging.Logger;
 
-public class TextProcessor {
-    private File inputFile;
+class TextProcessor {
+    private static final Logger logger = Logger.getLogger(TextProcessor.class.getName());
+    private String inputContent;
     private File outputFile;
 
-    public TextProcessor(File inputFile, File outputFile) {
-        this.inputFile = inputFile;
+    TextProcessor(String inputContent, File outputFile) {
+        this.inputContent = inputContent;
         this.outputFile = outputFile;
     }
 
@@ -20,10 +21,17 @@ public class TextProcessor {
      *
      * @return created XML
      */
-    public Optional<Document> process() throws Exception {
+    Optional<String> process() throws Exception {
+        Collection<String> paragraphs = splitDocumentIntoParagraphs();
         XmlGenerator xmlGenerator = new XmlGenerator();
-        xmlGenerator.generateXml(Collections.emptyList());
+        xmlGenerator.generateXml(paragraphs);
         xmlGenerator.saveDocumentToFile(outputFile);
-        return xmlGenerator.getDocument();
+        return xmlGenerator.getDocumentAsString();
+    }
+
+    private Collection<String> splitDocumentIntoParagraphs() {
+        logger.info("Split document into paragraphs");
+        // TODO
+        return Arrays.asList("Conent of paragraph 1", "Content of paragraph 2");
     }
 }
