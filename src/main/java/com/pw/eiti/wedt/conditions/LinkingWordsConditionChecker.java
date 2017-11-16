@@ -6,7 +6,7 @@ import com.pw.eiti.wedt.model.Sentence;
 import java.util.Arrays;
 import java.util.List;
 
-public class LinkingWordsConditionChecket implements ConditionChecker {
+public class LinkingWordsConditionChecker implements ConditionChecker {
     private static final List<String> LINKING_WORDS = Arrays.asList(
             "Although",
             "As a consequence",
