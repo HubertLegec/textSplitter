@@ -45,7 +45,7 @@ class XmlGenerator {
     }
 
     private Element createParagraph(String text) {
-        Element elem = doc.createElement("paragraph");
+        Element elem = doc.createElement("p");
         elem.appendChild(doc.createTextNode(text));
         return elem;
     }
