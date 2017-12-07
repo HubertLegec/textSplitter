@@ -8,9 +8,33 @@ Należy przeprowadzić eksperymenty pozwalające na ocenę jakości podziału na
 Język programowania java, scala
 
 ## Technologie
-Projekt został napisany w Java 8 z wykorzystaniem biblioteki JavaFX i Gradle.
+- Projekt jest napisany w Java 8.
+- Interfejs graficzny jest oparty na bibliotece JavaFX.
+- Do budowania i zarządzania zależnościami wykorzystany został Gradle.
+- Do stworzenia sieci neuronowej wykorzystana została biblioteka Encog.
+- Testy jednostkowe zostały napisane we frameworku Spock
 
 ## Algorytm podziału tekstu na paragrafy
 
-// TODO
+Aplikacja będzie dokonywała podziału tekstu na paragrafy biorąc pod uwagę szereg warunków. 
+Aby możliwe było sprawdzanie tych warunków tekst wejściowy musi zostać wstępnie przetworzony.
+
+### Wstępne przetwarzanie
+
+Za pomocą odpowiednich wyrażeń regularnych tekst zostanie podzielony na zdania i znaki znajdujące się pomiędzy zdaniami. 
+Dodatkowo każde zdanie zostanie powiązane z numerem wiersza, w którym się rozpoczyna oraz kończy. 
+W kolejnym kroku lista takich zdań i elementów je otaczających będzie dalej przetwarzana.
+
+### Warunki
+
+1. Czy jest to pierwsze zdanie w tekście.
+2. Czy zdanie rozpoczyna nową linię.
+3. Czy bezpośrednio przed zdaniem znajdował się znak nowej linii.
+4. Czy wiersz powyżej zdania był pusty.
+5. Czy bezpośrednio przed zdaniem znajdował się znak tabulacji.
+6. Czy wiersz poprzedzający ten, w którym rozpoczyna się zdanie był krótszy od poprzedzającego go wiersza.
+7. Czy zdanie to element listy (punktowanej lub numerowanej).
+8. Czy zdanie rozpoczyna się frazą charakterystyczną dla nowego paragrafu (przygotowana zostanie lista takich fraz dla języka angielskiego)
+9. W razie potrzeby dodatkowe warunki...
+
 
