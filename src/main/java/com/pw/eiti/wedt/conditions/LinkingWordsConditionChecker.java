@@ -1,7 +1,7 @@
 package com.pw.eiti.wedt.conditions;
 
 import com.pw.eiti.wedt.model.Document;
-import com.pw.eiti.wedt.model.Sentence;
+import com.pw.eiti.wedt.model.DocSentence;
 
 import java.util.Arrays;
 import java.util.List;
@@ -33,7 +33,7 @@ public class LinkingWordsConditionChecker implements ConditionChecker {
     );
 
     @Override
-    public boolean checkCondition(Sentence sentence, Document document) {
+    public boolean checkCondition(DocSentence sentence, Document document) {
         return LINKING_WORDS.stream()
                 .anyMatch(lw -> sentence.getText().startsWith(lw));
     }

@@ -1,8 +1,8 @@
 package com.pw.eiti.wedt.conditions;
 
 import com.pw.eiti.wedt.model.Document;
-import com.pw.eiti.wedt.model.Sentence;
+import com.pw.eiti.wedt.model.DocSentence;
 
 public interface ConditionChecker {
-    boolean checkCondition(Sentence sentence, Document document);
+    boolean checkCondition(DocSentence sentence, Document document);
 }

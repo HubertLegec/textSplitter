@@ -1,18 +1,21 @@
 package com.pw.eiti.wedt;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 
-class TextProcessor {
-    private static final Logger logger = Logger.getLogger(TextProcessor.class.getName());
-    private String inputContent;
+class TextFileProcessor {
+    private static final Logger logger = Logger.getLogger(TextFileProcessor.class.getName());
+    private File inputFile;
     private File outputFile;
 
-    TextProcessor(String inputContent, File outputFile) {
-        this.inputContent = inputContent;
+    TextFileProcessor(File inputFile, File outputFile) {
+        this.inputFile = inputFile;
         this.outputFile = outputFile;
     }
 
@@ -29,8 +32,10 @@ class TextProcessor {
         return xmlGenerator.getDocumentAsString();
     }
 
-    private Collection<String> splitDocumentIntoParagraphs() {
+    private Collection<String> splitDocumentIntoParagraphs() throws IOException {
         logger.info("Split document into paragraphs");
+        List<String> lines = Files.readAllLines(inputFile.toPath());
+
         // TODO
         return Arrays.asList("Conent of paragraph 1", "Content of paragraph 2");
     }

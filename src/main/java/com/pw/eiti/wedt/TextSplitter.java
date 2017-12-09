@@ -107,8 +107,8 @@ public class TextSplitter extends Application {
             return;
         }
         try {
-            TextProcessor textProcessor = new TextProcessor(inputContent, outputFile);
-            String result = textProcessor.process()
+            TextFileProcessor textFileProcessor = new TextFileProcessor(inputFile, outputFile);
+            String result = textFileProcessor.process()
                     .orElse("Output not available");
             outputPrevTA.setText(result);
         } catch (Exception ex) {
