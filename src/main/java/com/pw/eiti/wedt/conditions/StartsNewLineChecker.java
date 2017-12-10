@@ -7,7 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 public class StartsNewLineChecker implements ConditionChecker {
     @Override
     public boolean checkCondition(DocSentence sentence, Document document) {
-        String text = sentence.getPredecessor().getContent();
+        String text = sentence.getPredecessor();
         return StringUtils.endsWith(StringUtils.replace(text, " ", ""), "\n");
     }
 }

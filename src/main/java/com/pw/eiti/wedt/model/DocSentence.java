@@ -8,7 +8,7 @@ public class DocSentence {
     private String text;
     private int startRow;
     private int endRow;
-    private SentencePredecessor predecessor;
+    private String predecessor;
 
     public DocSentence() {
     }
@@ -18,7 +18,7 @@ public class DocSentence {
         this.text = sentence.text();
         this.startRow = startRow;
         this.endRow = calculateEndRow(startRow, text);
-        this.predecessor = new SentencePredecessor(sentence.before(0));
+        this.predecessor = sentence.before(0);
     }
 
     public String getText() {
@@ -37,7 +37,7 @@ public class DocSentence {
         return endRow;
     }
 
-    public SentencePredecessor getPredecessor() {
+    public String getPredecessor() {
         return predecessor;
     }
 

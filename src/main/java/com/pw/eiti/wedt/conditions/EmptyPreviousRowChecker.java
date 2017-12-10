@@ -10,7 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 public class EmptyPreviousRowChecker implements ConditionChecker {
     @Override
     public boolean checkCondition(DocSentence sentence, Document document) {
-        String text = sentence.getPredecessor().getContent();
+        String text = sentence.getPredecessor();
         return StringUtils.contains(text, "\n\n");
     }
 }

@@ -56,7 +56,7 @@ class TextFileProcessor {
 
     private String sentencesToParagraph(List<DocSentence> sentences) {
         return sentences.stream()
-                .map(s -> s.getPredecessor().getContent() + s.getText())
+                .map(s -> s.getPredecessor() + s.getText())
                 .collect(joining());
     }
 }
