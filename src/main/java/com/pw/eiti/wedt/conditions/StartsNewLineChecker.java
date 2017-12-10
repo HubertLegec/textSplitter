@@ -1,16 +1,13 @@
 package com.pw.eiti.wedt.conditions;
 
-import com.pw.eiti.wedt.model.Document;
 import com.pw.eiti.wedt.model.DocSentence;
+import com.pw.eiti.wedt.model.Document;
 import org.apache.commons.lang3.StringUtils;
 
-/**
- * Checks if row above given sentence is empty
- */
-public class EmptyPreviousRowChecker implements ConditionChecker {
+public class StartsNewLineChecker implements ConditionChecker {
     @Override
     public boolean checkCondition(DocSentence sentence, Document document) {
         String text = sentence.getPredecessor().getContent();
-        return StringUtils.contains(text, "\n\n");
+        return StringUtils.endsWith(StringUtils.replace(text, " ", ""), "\n");
     }
 }

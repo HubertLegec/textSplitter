@@ -1,7 +1,5 @@
 package com.pw.eiti.wedt.model;
 
-import org.apache.commons.lang3.StringUtils;
-
 public class SentencePredecessor {
     private String content;
 
@@ -16,7 +14,4 @@ public class SentencePredecessor {
         return content;
     }
 
-    public boolean containsEmptyRow() {
-        return StringUtils.contains(content, "\n\n");
-    }
 }

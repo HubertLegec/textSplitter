@@ -13,10 +13,10 @@ public class DocSentence {
     public DocSentence() {
     }
 
-    public DocSentence(int id, Sentence sentence) {
-        this.id = id;
+    public DocSentence(Sentence sentence, int startRow) {
+        this.id = sentence.sentenceIndex();
         this.text = sentence.text();
-        this.startRow = 0;
+        this.startRow = startRow;
         this.endRow = calculateEndRow(startRow, text);
         this.predecessor = new SentencePredecessor(sentence.before(0));
     }

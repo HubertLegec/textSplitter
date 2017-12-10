@@ -1,22 +1,31 @@
 package com.pw.eiti.wedt;
 
+import com.pw.eiti.wedt.model.DocSentence;
+import com.pw.eiti.wedt.model.Document;
+import edu.stanford.nlp.util.Pair;
+
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.*;
 
 class TextFileProcessor {
     private static final Logger logger = Logger.getLogger(TextFileProcessor.class.getName());
     private File inputFile;
     private File outputFile;
+    private ParagraphDetector detector;
 
-    TextFileProcessor(File inputFile, File outputFile) {
+    TextFileProcessor(File inputFile, File outputFile, ParagraphDetector detector) {
         this.inputFile = inputFile;
         this.outputFile = outputFile;
+        this.detector = detector;
     }
 
     /**
@@ -34,9 +43,20 @@ class TextFileProcessor {
 
     private Collection<String> splitDocumentIntoParagraphs() throws IOException {
         logger.info("Split document into paragraphs");
-        List<String> lines = Files.readAllLines(inputFile.toPath());
+        Document document = new Document(inputFile);
+        AtomicInteger paragraphIdx = new AtomicInteger(-1);
+        return document.getSentences().stream()
+                .map(s -> new Pair<>(detector.startsNewParagraph(s) ? paragraphIdx.incrementAndGet() : paragraphIdx.get(), s))
+                .collect(groupingBy(Pair::first, Collectors.mapping(Pair::second, toList())))
+                .entrySet().stream()
+                .map(Map.Entry::getValue)
+                .map(this::sentencesToParagraph)
+                .collect(toList());
+    }
 
-        // TODO
-        return Arrays.asList("Conent of paragraph 1", "Content of paragraph 2");
+    private String sentencesToParagraph(List<DocSentence> sentences) {
+        return sentences.stream()
+                .map(s -> s.getPredecessor().getContent() + s.getText())
+                .collect(joining());
     }
 }
