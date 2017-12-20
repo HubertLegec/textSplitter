@@ -1,0 +1,6 @@
+This is first e.g. sentence. Isn't it simple?
+
+    Start of second paragraph. It consists of following sentences:
+        - hello to everyone,
+        - hi "in quotations".
+This is the last sentence.

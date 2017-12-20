@@ -1,0 +1,12 @@
+apply plugin: 'application'
+apply plugin: 'java'
+apply plugin: 'groovy'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+dependencies {
+    compile project(':common')
+}
+
+mainClassName = 'com.pw.eiti.wedt.NetworkTrainer'

@@ -1,2 +1,5 @@
 rootProject.name = 'textSplitter'
+include 'common'
+include 'app'
+include 'trainer'
 
