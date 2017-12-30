@@ -13,6 +13,17 @@ class ConversionUtilsSpec extends Specification {
             false | 0.0d
     }
 
+    def 'double is converted to boolean correctly'() {
+        expect:
+            ConversionUtils.doubleToBoolean(a) == b
+        where:
+            a     | b
+            0.0   | false
+            0.1   | true
+            1     | true
+            -2.4  | true
+    }
+
     def 'string with comma separator is converted to list of int'() {
         given:
             String input = "1,2,5,6"

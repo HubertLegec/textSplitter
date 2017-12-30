@@ -19,11 +19,18 @@ public class NetworkTrainer {
             String inputDir = cmd.getOptionValue("input");
             String modelFileName = cmd.getOptionValue("output");
             log.info("Create trainer...");
-            ModelTrainer trainer = new ModelTrainer(inputDir);
+            ModelTrainer trainer = new ModelTrainer(inputDir, inputDir);
             log.info("Train model...");
             BasicNetwork networkModel = trainer.train();
             log.info("Save model to file: " + modelFileName);
             NetworkProvider.saveToFile(modelFileName, networkModel);
+            log.info("Model saved.");
+            TestResultStatistics statistics = trainer.validate();
+            System.out.println("---- Trained model statistics ---");
+            System.out.println("Training time: " + trainer.getTrainingTime().toString());
+            System.out.println(statistics.toString());
+            System.out.println("---------------------------------");
+            System.exit(0);
         } catch (ParseException e) {
             System.out.println(e.getMessage());
             argumentParser.printHelp();

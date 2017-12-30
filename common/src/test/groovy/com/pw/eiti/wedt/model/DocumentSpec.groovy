@@ -59,4 +59,31 @@ class DocumentSpec extends Specification {
             sentence5.startRow == 5
             sentence5.endRow == 5
     }
+
+    def "reuters file model is created correctly"() {
+        given: "reuters file"
+            Path file = Paths.get(getClass().getResource("/reut_raw.txt").file)
+        when: "model is created"
+            Document document = new Document(file)
+        then: "it has correct sentence and line division"
+            document.lines.size() == 54
+            document.sentences.size() == 17
+
+            DocSentence sentence1 = document.sentences[0]
+            sentence1.startRow == 0
+            sentence1.endRow == 3
+            sentence1.id == 0
+
+            DocSentence sentence8 = document.sentences[7]
+            sentence8.startRow == 23
+            sentence8.endRow == 26
+            sentence8.predecessor == "\n\n  "
+            sentence8.id == 7
+
+            DocSentence sentence17 = document.sentences[16]
+            sentence17.startRow == 52
+            sentence17.endRow == 53
+            sentence17.predecessor == "\n  "
+            sentence17.id == 16
+    }
 }

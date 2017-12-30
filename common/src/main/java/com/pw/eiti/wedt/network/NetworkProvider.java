@@ -12,6 +12,7 @@ public class NetworkProvider {
     public static BasicNetwork createNetwork(int inputSize) {
         final BasicNetwork network = new BasicNetwork();
         network.addLayer(new BasicLayer(new ActivationLinear(), true, inputSize));
+        network.addLayer(new BasicLayer(new ActivationSigmoid(), true, 2 * inputSize));
         network.addLayer(new BasicLayer(new ActivationSigmoid(), true, 1));
         network.getStructure().finalizeStructure();
         network.reset();

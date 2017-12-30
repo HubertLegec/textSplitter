@@ -53,7 +53,7 @@ public class DataSetProvider {
         }
     }
 
-    private List<Pair<SentenceRepresentation, Boolean>> getFileSentences(Path inputFile) {
+    List<Pair<SentenceRepresentation, Boolean>> getFileSentences(Path inputFile) {
         log.info("Get sentences from file: " + inputFile.getFileName());
         Document document = new Document(inputFile);
         List<Integer> startParagraphIds = getStartParagraphIds(inputFile.getFileName().toString());
