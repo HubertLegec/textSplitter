@@ -68,6 +68,7 @@ public class DataSetProvider {
 
     private List<Integer> getStartParagraphIds(String rawFileName) {
         String filename = rawFileName.replace("_raw.txt", "_paras.txt");
+        log.info("Get start paragraph sentence ids from file: " + filename);
         return FileUtils.findFileInDirectory(inputDir, filename)
                 .map(FileUtils::readFileAsString)
                 .map(s -> s.orElse(""))

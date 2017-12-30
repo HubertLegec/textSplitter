@@ -2,6 +2,9 @@ package com.pw.eiti.wedt.model
 
 import spock.lang.Specification
 
+import java.nio.file.Path
+import java.nio.file.Paths
+
 class DocumentSpec extends Specification {
     def "simple text is parsed correctly"() {
         given: "simple text"
@@ -29,7 +32,7 @@ class DocumentSpec extends Specification {
 
     def "simple file model is created correctly"() {
         given: "sample file"
-            File file = new File(getClass().getResource("/document1.txt").file)
+            Path file = Paths.get(getClass().getResource("/document1.txt").file)
         when: "model is created"
             Document document = new Document(file)
         then: "it has correct sentence and line division"

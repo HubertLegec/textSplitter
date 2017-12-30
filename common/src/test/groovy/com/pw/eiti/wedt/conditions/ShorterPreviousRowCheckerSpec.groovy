@@ -4,12 +4,15 @@ import com.pw.eiti.wedt.model.DocSentence
 import com.pw.eiti.wedt.model.Document
 import spock.lang.Specification
 
+import java.nio.file.Path
+import java.nio.file.Paths
+
 class ShorterPreviousRowCheckerSpec extends Specification {
     ConditionChecker checker = new ShorterPreviousRowChecker()
     Document document
 
     def setup() {
-        File file = new File(getClass().getResource("/shorterLine.txt").file)
+        Path file = Paths.get(getClass().getResource("/shorterLine.txt").file)
         document = new Document(file)
     }
 
