@@ -6,7 +6,6 @@ import com.pw.eiti.wedt.model.Document;
 import edu.stanford.nlp.util.Pair;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -42,14 +41,14 @@ class TextFileProcessor {
         return xmlGenerator.getDocumentAsString();
     }
 
-    private Collection<String> splitDocumentIntoParagraphs() throws IOException {
+    private Collection<String> splitDocumentIntoParagraphs() {
         logger.info("Split document into paragraphs");
         Document document = new Document(inputFile.toPath());
         AtomicInteger paragraphIdx = new AtomicInteger(-1);
-        return document.getSentences().stream()
+        Map<Integer, List<DocSentence>> parasGroups = document.getSentences().stream()
                 .map(s -> new Pair<>(detector.startsNewParagraph(s) ? paragraphIdx.incrementAndGet() : paragraphIdx.get(), s))
-                .collect(groupingBy(Pair::first, Collectors.mapping(Pair::second, toList())))
-                .entrySet().stream()
+                .collect(groupingBy(Pair::first, Collectors.mapping(Pair::second, toList())));
+        return parasGroups.entrySet().stream()
                 .map(Map.Entry::getValue)
                 .map(this::sentencesToParagraph)
                 .collect(toList());

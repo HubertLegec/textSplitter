@@ -11,10 +11,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -39,9 +36,12 @@ public class TextSplitter extends Application {
     private TextArea inputPrevTA;
     @FXML
     private TextArea outputPrevTA;
+    @FXML
+    private Label statusL;
 
     private File inputFile;
     private File outputFile;
+    private File modelFile;
     private String inputContent;
 
     /**
@@ -107,8 +107,11 @@ public class TextSplitter extends Application {
             showDialog("Enter output file path before processing!", "Output path error");
             return;
         }
+        if (modelFile == null) {
+            showDialog("Load neural network model first!", "Model file error");
+        }
         try {
-            BasicNetwork network = NetworkProvider.restoreSavedNetwork(getClass().getResource("/model").getPath());
+            BasicNetwork network = NetworkProvider.restoreSavedNetwork(modelFile.getAbsolutePath());
             ParagraphDetector detector = new PerceptronParagraphDetector(network, new SentenceConditionsMapper());
             TextFileProcessor textFileProcessor = new TextFileProcessor(inputFile, outputFile, detector);
             String result = textFileProcessor.process()
@@ -117,6 +120,17 @@ public class TextSplitter extends Application {
         } catch (Exception ex) {
             // TODO - change to some error message
             outputPrevTA.setText(ex.getMessage());
+        }
+    }
+
+    @FXML
+    void onLoadModelClick(ActionEvent e) {
+        FileChooser chooser = new FileChooser();
+        modelFile = chooser.showOpenDialog(window);
+        if (modelFile != null) {
+
+        } else {
+
         }
     }
 

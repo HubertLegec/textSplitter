@@ -1,67 +1,70 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.TabPane?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-
-<AnchorPane prefHeight="800.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pw.eiti.wedt.TextSplitter">
-    <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
-        <children>
-            <Label text="Input file">
-            <VBox.margin>
-               <Insets top="10.0" />
-            </VBox.margin></Label>
-            <HBox spacing="5.0">
-                <children>
-                    <TextField fx:id="inputFileTF" promptText="Input file path..." HBox.hgrow="ALWAYS" />
-                    <Button fx:id="inputFileBT" onAction="#onInputFileButtonClick" text="..." HBox.hgrow="ALWAYS" />
-                </children>
-            <VBox.margin>
-               <Insets top="5.0" />
-            </VBox.margin>
-            </HBox>
-            <Label text="Output file">
-            <VBox.margin>
-               <Insets top="10.0" />
-            </VBox.margin></Label>
-            <HBox spacing="5.0">
-                <children>
-                    <TextField fx:id="outputFileTF" promptText="Output file path..." HBox.hgrow="ALWAYS" />
-                    <Button fx:id="outputFileBT" onAction="#onOutputFileButtonClick" text="..." HBox.hgrow="ALWAYS" />
-                </children>
-            <VBox.margin>
-               <Insets top="5.0" />
-            </VBox.margin>
-            </HBox>
-            <HBox alignment="CENTER">
-                <Button fx:id="processBT" onAction="#onProcessButtonClick">Process</Button>
-            <VBox.margin>
-               <Insets top="10.0" />
-            </VBox.margin>
-            </HBox>
-            <TabPane VBox.vgrow="ALWAYS">
-                <Tab closable="false" text="Input file">
-                    <TextArea fx:id="inputPrevTA" editable="false" promptText="Input preview..." VBox.vgrow="ALWAYS">
-                    </TextArea>
-                </Tab>
-                <Tab closable="false" text="Output file">
-                    <TextArea fx:id="outputPrevTA" editable="false" promptText="Output preview..." VBox.vgrow="ALWAYS">
-                    </TextArea>
-                </Tab>
-                <VBox.margin>
-                    <Insets top="10.0" />
-                </VBox.margin>
-            </TabPane>
-        </children>
-    </VBox>
-   <padding>
-      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-   </padding>
-</AnchorPane>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<BorderPane prefHeight="800.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pw.eiti.wedt.TextSplitter">
+    <top>
+        <MenuBar>
+            <Menu text="Model">
+                <MenuItem text="Load" onAction="#onLoadModelClick" />
+            </Menu>
+        </MenuBar>
+    </top>
+    <center>
+        <VBox prefWidth="100.0">
+            <children>
+                <Label text="Input file">
+                    <VBox.margin>
+                        <Insets top="10.0" />
+                    </VBox.margin></Label>
+                <HBox spacing="5.0">
+                    <children>
+                        <TextField fx:id="inputFileTF" promptText="Input file path..." HBox.hgrow="ALWAYS" />
+                        <Button fx:id="inputFileBT" onAction="#onInputFileButtonClick" text="..." HBox.hgrow="ALWAYS" />
+                    </children>
+                    <VBox.margin>
+                        <Insets top="5.0" />
+                    </VBox.margin>
+                </HBox>
+                <Label text="Output file">
+                    <VBox.margin>
+                        <Insets top="10.0" />
+                    </VBox.margin></Label>
+                <HBox spacing="5.0">
+                    <children>
+                        <TextField fx:id="outputFileTF" promptText="Output file path..." HBox.hgrow="ALWAYS" />
+                        <Button fx:id="outputFileBT" onAction="#onOutputFileButtonClick" text="..." HBox.hgrow="ALWAYS" />
+                    </children>
+                    <VBox.margin>
+                        <Insets top="5.0" />
+                    </VBox.margin>
+                </HBox>
+                <HBox alignment="CENTER">
+                    <Button fx:id="processBT" onAction="#onProcessButtonClick">Process</Button>
+                    <VBox.margin>
+                        <Insets top="10.0" />
+                    </VBox.margin>
+                </HBox>
+                <TabPane VBox.vgrow="ALWAYS">
+                    <Tab closable="false" text="Input file">
+                        <TextArea fx:id="inputPrevTA" editable="false" promptText="Input preview..." VBox.vgrow="ALWAYS">
+                        </TextArea>
+                    </Tab>
+                    <Tab closable="false" text="Output file">
+                        <TextArea fx:id="outputPrevTA" editable="false" promptText="Output preview..." VBox.vgrow="ALWAYS">
+                        </TextArea>
+                    </Tab>
+                    <VBox.margin>
+                        <Insets top="10.0" />
+                    </VBox.margin>
+                </TabPane>
+            </children>
+        </VBox>
+    </center>
+    <bottom>
+        <ToolBar>
+            <Label fx:id="statusL" text="Model not loaded"/>
+        </ToolBar>
+    </bottom>
+</BorderPane>
