@@ -17,7 +17,7 @@ class StartsNewLineCheckerSpec extends Specification {
 
     def "sentence does not start new line"() {
         given: "sentence that doesn't start new line"
-            DocSentence sentence = new DocSentence(text: "Sentence text", predecessor: " ")
+            DocSentence sentence = new DocSentence(id: 2, text: "Sentence text", predecessor: " ")
         when: "condition is checked"
             boolean result = checker.checkCondition(sentence)
         then: "result should be negative"
