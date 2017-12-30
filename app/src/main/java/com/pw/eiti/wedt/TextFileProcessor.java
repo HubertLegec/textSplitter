@@ -1,5 +1,6 @@
 package com.pw.eiti.wedt;
 
+import com.pw.eiti.wedt.detector.ParagraphDetector;
 import com.pw.eiti.wedt.model.DocSentence;
 import com.pw.eiti.wedt.model.Document;
 import edu.stanford.nlp.util.Pair;
@@ -43,7 +44,7 @@ class TextFileProcessor {
 
     private Collection<String> splitDocumentIntoParagraphs() throws IOException {
         logger.info("Split document into paragraphs");
-        Document document = new Document(inputFile);
+        Document document = new Document(inputFile.toPath());
         AtomicInteger paragraphIdx = new AtomicInteger(-1);
         return document.getSentences().stream()
                 .map(s -> new Pair<>(detector.startsNewParagraph(s) ? paragraphIdx.incrementAndGet() : paragraphIdx.get(), s))

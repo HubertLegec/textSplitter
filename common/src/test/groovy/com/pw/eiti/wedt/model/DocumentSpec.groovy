@@ -7,8 +7,9 @@ class DocumentSpec extends Specification {
         given: "simple text"
             String text = "\tThis is first sentence. This is second sentence in first paragraph.\n\t" +
                     "This is first sentence in second paragraph"
+            Document document = new Document()
         when: "text is parsed"
-            List<DocSentence> result = Document.generateSentencesFromString(text)
+            List<DocSentence> result = document.generateSentencesFromString(text)
         then: "correct sentences are created"
             result.size() == 3
     }
@@ -19,8 +20,9 @@ class DocumentSpec extends Specification {
                     "Start of second paragraph. It consists of following sentences:\n" +
                     " - hello to everyone" +
                     " - hi \"in quotations\""
+            Document document = new Document()
         when: "text is parsed"
-            List<DocSentence> result = Document.generateSentencesFromString(text)
+            List<DocSentence> result = document.generateSentencesFromString(text)
         then: "correct sentences are created"
             result.size() == 4
     }

@@ -10,7 +10,7 @@ class StartsNewLineCheckerSpec extends Specification {
         given: "sentence that starts new line"
             DocSentence sentence = new DocSentence(text: "Sentence text", predecessor: "\n")
         when: "condition is checked"
-            boolean result = checker.checkCondition(sentence, null)
+            boolean result = checker.checkCondition(sentence)
         then: "result should be positive"
             result == true
     }
@@ -19,7 +19,7 @@ class StartsNewLineCheckerSpec extends Specification {
         given: "sentence that doesn't start new line"
             DocSentence sentence = new DocSentence(text: "Sentence text", predecessor: " ")
         when: "condition is checked"
-            boolean result = checker.checkCondition(sentence, null)
+            boolean result = checker.checkCondition(sentence)
         then: "result should be negative"
             result == false
     }

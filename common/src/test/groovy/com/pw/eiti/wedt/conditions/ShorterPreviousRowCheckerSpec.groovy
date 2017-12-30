@@ -17,7 +17,7 @@ class ShorterPreviousRowCheckerSpec extends Specification {
         given: "sentence and document"
             DocSentence sentence = document.sentences[2]
         when: "condition is checked"
-            boolean result = checker.checkCondition(sentence, document)
+            boolean result = checker.checkCondition(sentence)
         then: "result should be positive"
             result == true
     }
@@ -26,7 +26,7 @@ class ShorterPreviousRowCheckerSpec extends Specification {
         given: "sentence and document"
             DocSentence sentence = document.sentences[4]
         when: "condition is checked"
-            boolean result = checker.checkCondition(sentence, document)
+            boolean result = checker.checkCondition(sentence)
         then: "result should be negative"
             result == false
     }
@@ -35,7 +35,7 @@ class ShorterPreviousRowCheckerSpec extends Specification {
         given: "sentence and document"
             DocSentence sentence = document.sentences[6]
         when: "condition is checked"
-            boolean result = checker.checkCondition(sentence, document)
+            boolean result = checker.checkCondition(sentence)
         then: "result should be negative"
             result == false
     }

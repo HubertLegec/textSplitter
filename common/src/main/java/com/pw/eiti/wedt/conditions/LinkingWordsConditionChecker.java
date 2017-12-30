@@ -1,12 +1,11 @@
 package com.pw.eiti.wedt.conditions;
 
-import com.pw.eiti.wedt.model.Document;
 import com.pw.eiti.wedt.model.DocSentence;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class LinkingWordsConditionChecker implements ConditionChecker {
+class LinkingWordsConditionChecker implements ConditionChecker {
     private static final List<String> LINKING_WORDS = Arrays.asList(
             "Although",
             "As a consequence",
@@ -33,7 +32,7 @@ public class LinkingWordsConditionChecker implements ConditionChecker {
     );
 
     @Override
-    public boolean checkCondition(DocSentence sentence, Document document) {
+    public boolean checkCondition(DocSentence sentence) {
         return LINKING_WORDS.stream()
                 .anyMatch(lw -> sentence.getText().startsWith(lw));
     }

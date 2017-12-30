@@ -1,5 +1,10 @@
 package com.pw.eiti.wedt;
 
+import com.pw.eiti.wedt.conditions.SentenceConditionsMapper;
+import com.pw.eiti.wedt.detector.ParagraphDetector;
+import com.pw.eiti.wedt.detector.PerceptronParagraphDetector;
+import com.pw.eiti.wedt.network.NetworkProvider;
+import com.pw.eiti.wedt.utils.FileUtils;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,10 +18,9 @@ import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import org.apache.commons.io.FileUtils;
+import org.encog.neural.networks.BasicNetwork;
 
 import java.io.File;
-import java.io.IOException;
 
 
 public class TextSplitter extends Application {
@@ -75,12 +79,9 @@ public class TextSplitter extends Application {
         outputPrevTA.clear();
         if (inputFile != null) {
             inputFileTF.setText(inputFile.getAbsolutePath());
-            try {
-                inputContent = FileUtils.readFileToString(inputFile, "UTF-8");
-                inputPrevTA.setText(inputContent);
-            } catch (IOException ex) {
-                inputPrevTA.setText("Cannot load file preview");
-            }
+            inputContent = FileUtils.readFileAsString(inputFile.toPath())
+                    .orElse("Can't load file preview");
+            inputPrevTA.setText(inputContent);
         } else {
             inputPrevTA.clear();
         }
@@ -107,7 +108,9 @@ public class TextSplitter extends Application {
             return;
         }
         try {
-            TextFileProcessor textFileProcessor = new TextFileProcessor(inputFile, outputFile, null);
+            BasicNetwork network = NetworkProvider.restoreSavedNetwork(getClass().getResource("/model").getPath());
+            ParagraphDetector detector = new PerceptronParagraphDetector(network, new SentenceConditionsMapper());
+            TextFileProcessor textFileProcessor = new TextFileProcessor(inputFile, outputFile, detector);
             String result = textFileProcessor.process()
                     .orElse("Output not available");
             outputPrevTA.setText(result);

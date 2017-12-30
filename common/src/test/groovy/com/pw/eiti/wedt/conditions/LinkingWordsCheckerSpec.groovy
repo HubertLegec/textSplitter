@@ -11,7 +11,7 @@ class LinkingWordsCheckerSpec extends Specification {
         given: 'sentence that starts with linking phase'
             def sentence = new DocSentence(text: "Undoubtedly, it must be true")
         when: 'condition is checked'
-            def condition = checker.checkCondition(sentence, null)
+            def condition = checker.checkCondition(sentence)
         then: 'result should be positive'
             condition == true
     }
@@ -20,7 +20,7 @@ class LinkingWordsCheckerSpec extends Specification {
         given: 'sentence not starting with linking phase'
             def sentence = new DocSentence(text:  "Hello, it's me!")
         when: 'condition is checked'
-            def condition = checker.checkCondition(sentence, null)
+            def condition = checker.checkCondition(sentence)
         then: 'result should be positive'
             condition == false
     }

@@ -9,16 +9,18 @@ public class DocSentence {
     private int startRow;
     private int endRow;
     private String predecessor;
+    private Document document;
 
     public DocSentence() {
     }
 
-    public DocSentence(Sentence sentence, int startRow) {
+    public DocSentence(Sentence sentence, Document document, int startRow) {
         this.id = sentence.sentenceIndex();
         this.text = sentence.text();
         this.startRow = startRow;
         this.endRow = calculateEndRow(startRow, text);
         this.predecessor = sentence.before(0);
+        this.document = document;
     }
 
     public String getText() {
@@ -39,6 +41,10 @@ public class DocSentence {
 
     public String getPredecessor() {
         return predecessor;
+    }
+
+    public Document getDocument() {
+        return document;
     }
 
     private static int calculateEndRow(int startRow, String text) {

@@ -1,30 +1,25 @@
-package com.pw.eiti.wedt.network;
+package com.pw.eiti.wedt.detector;
 
-import com.pw.eiti.wedt.ParagraphDetector;
 import com.pw.eiti.wedt.model.DocSentence;
+import com.pw.eiti.wedt.model.SentenceMapper;
+import com.pw.eiti.wedt.model.SentenceRepresentation;
+import org.encog.ml.data.MLData;
 import org.encog.neural.networks.BasicNetwork;
-import org.encog.persist.EncogDirectoryPersistence;
-
-import java.io.File;
 
 public class PerceptronParagraphDetector implements ParagraphDetector {
     private BasicNetwork network;
+    private SentenceMapper mapper;
 
-    PerceptronParagraphDetector(BasicNetwork network) {
+    public PerceptronParagraphDetector(BasicNetwork network, SentenceMapper mapper) {
+        this.mapper = mapper;
         this.network = network;
     }
 
     @Override
     public boolean startsNewParagraph(DocSentence sentence) {
-        return false;
-    }
-
-    public void saveToFile(String modelPath) {
-        EncogDirectoryPersistence.saveObject(new File(modelPath), this);
-    }
-
-    public static PerceptronParagraphDetector restoreFromSavedModel(String modelPath) {
-        BasicNetwork savedNet = (BasicNetwork) EncogDirectoryPersistence.loadObject(new File(modelPath));
-        return new PerceptronParagraphDetector(savedNet);
+        SentenceRepresentation sentenceRepresentation = mapper.getSentenceRepresentation(sentence);
+        MLData data = sentenceRepresentation.toMLData();
+        int result = network.classify(data);
+        return result != 0;
     }
 }

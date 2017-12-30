@@ -10,7 +10,7 @@ class PrecedingTabCheckerSpec extends Specification {
         given: 'sentence preceded by tab'
             DocSentence sentence = new DocSentence(text: "Some sentence", predecessor: "\t")
         when: 'condition is checked'
-            boolean result = checker.checkCondition(sentence, null)
+            boolean result = checker.checkCondition(sentence)
         then: 'result should be positive'
             result == true
     }
@@ -19,7 +19,7 @@ class PrecedingTabCheckerSpec extends Specification {
         given: 'sentence not preceded by tab'
             DocSentence sentence = new DocSentence(text: "Some sentence", predecessor: "    ")
         when: 'condition is checked'
-            boolean result = checker.checkCondition(sentence, null)
+            boolean result = checker.checkCondition(sentence)
         then: 'result should be negative'
             result == false
     }

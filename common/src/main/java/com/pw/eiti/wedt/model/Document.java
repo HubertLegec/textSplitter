@@ -1,11 +1,10 @@
 package com.pw.eiti.wedt.model;
 
+import com.pw.eiti.wedt.utils.FileUtils;
 import edu.stanford.nlp.simple.Sentence;
 import org.apache.commons.lang3.StringUtils;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,11 +16,12 @@ public class Document {
 
     public Document() {}
 
-    public Document(File inputFile) throws IOException {
-        this.lines = Files.readAllLines(inputFile.toPath());
-        String fileContent = new String(Files.readAllBytes(inputFile.toPath()));
+    public Document(final Path inputFile) {
+        this.lines = FileUtils.readFileAsLines(inputFile)
+                .orElseThrow(() -> new RuntimeException("Can't read file: " + inputFile.getFileName()));
+        String fileContent = FileUtils.readFileAsString(inputFile)
+                .orElseThrow(() -> new RuntimeException("Can't read file: " + inputFile.getFileName()));
         this.sentences = generateSentencesFromString(fileContent);
-
     }
 
     public List<DocSentence> getSentences() {
@@ -42,16 +42,24 @@ public class Document {
         return lines.get(idx);
     }
 
-    static List<DocSentence> generateSentencesFromString(String fileContent) {
+    List<DocSentence> generateSentencesFromString(String fileContent) {
         edu.stanford.nlp.simple.Document doc = new edu.stanford.nlp.simple.Document(fileContent);
         List<Sentence>  sentences = doc.sentences();
         return sentences.stream()
-                .map(s -> new DocSentence(s, calculateRowFromSentenceOffset(s.characterOffsetBegin(0), fileContent)))
+                .map(s -> mapSentenceToDocSentence(s, fileContent))
                 .collect(toList());
     }
 
     static int calculateRowFromSentenceOffset(int offset, String documentContent) {
         String subString = StringUtils.substring(documentContent, 0, offset);
         return StringUtils.countMatches(subString, "\n");
+    }
+
+    private DocSentence mapSentenceToDocSentence(Sentence sentence, String fileContent) {
+        return new DocSentence(
+                sentence,
+                this,
+                calculateRowFromSentenceOffset(sentence.characterOffsetBegin(0), fileContent)
+        );
     }
 }

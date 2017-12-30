@@ -1,4 +1,4 @@
-package com.pw.eiti.wedt;
+package com.pw.eiti.wedt.detector;
 
 import com.pw.eiti.wedt.model.DocSentence;
 

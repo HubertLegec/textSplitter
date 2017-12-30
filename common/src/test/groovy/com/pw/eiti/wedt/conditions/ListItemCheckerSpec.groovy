@@ -10,7 +10,7 @@ class ListItemCheckerSpec extends Specification {
         given: ""
             DocSentence sentence = new DocSentence(text: "11. List sentence.")
         when: "condition is checked"
-            boolean result = checker.checkCondition(sentence, null)
+            boolean result = checker.checkCondition(sentence)
         then: "result should be positive"
             result == true
     }
@@ -19,7 +19,7 @@ class ListItemCheckerSpec extends Specification {
         given: ""
             DocSentence sentence = new DocSentence(text: "    * List sentence")
         when: "condition is checked"
-            boolean result = checker.checkCondition(sentence, null)
+            boolean result = checker.checkCondition(sentence)
         then: "result should be positive"
             result == true
     }
@@ -28,7 +28,7 @@ class ListItemCheckerSpec extends Specification {
         given: ""
             DocSentence sentence = new DocSentence(text: "Not a list sentence.")
         when: "condition is checked"
-            boolean result = checker.checkCondition(sentence, null)
+            boolean result = checker.checkCondition(sentence)
         then: "result should be negative"
             result == false
     }
