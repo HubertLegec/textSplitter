@@ -13,7 +13,7 @@ public class TestResultEntry {
 
     public TestResultEntry(double ideal, double actual) {
         this.ideal = ConversionUtils.doubleToBoolean(ideal);
-        this.actual = ConversionUtils.doubleToBoolean(actual);
+        this.actual = actual > 0.5;
     }
 
     public boolean isIdeal() {

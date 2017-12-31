@@ -8,7 +8,7 @@ class EmptyPreviousRowCheckerSpec extends Specification {
 
     def 'previous row is empty'() {
         given: 'sentence with empty previous row'
-            DocSentence sentence = new DocSentence(text: "Sentence", predecessor: "\n\n\t")
+            DocSentence sentence = new DocSentence(id: 3, text: "Sentence", predecessor: "\n\n\t")
         when: 'condition is checked'
             boolean result = checker.checkCondition(sentence)
         then: 'result should be positive'
@@ -17,7 +17,7 @@ class EmptyPreviousRowCheckerSpec extends Specification {
 
     def 'previous row is not empty'() {
         given: 'sentence with not empty previous row'
-            DocSentence sentence = new DocSentence(text: "Sentence", predecessor: "\n\t")
+            DocSentence sentence = new DocSentence(id: 3, text: "Sentence", predecessor: "\n\t")
         when: 'condition is checked'
             boolean result = checker.checkCondition(sentence)
         then: 'result should be negative'
@@ -26,10 +26,10 @@ class EmptyPreviousRowCheckerSpec extends Specification {
 
     def 'first sentence in document'() {
         given: 'first sentence in document'
-            DocSentence sentence = new DocSentence(text: "Sentence", predecessor: "")
+            DocSentence sentence = new DocSentence(id: 0, text: "Sentence", predecessor: "")
         when: 'condition is checked'
             boolean result = checker.checkCondition(sentence)
         then: 'result should be negative'
-            result == false
+            result == true
     }
 }

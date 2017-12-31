@@ -29,7 +29,7 @@ public class ModelTrainer {
     private Duration trainingTime = null;
 
     public ModelTrainer(String inputDir, String testDir) {
-        this(inputDir, testDir, 6, 0.05);
+        this(inputDir, testDir, 6, 0.04);
     }
 
     public ModelTrainer(String inputDir, String testDir, int inputSize, double errorThreshold) {
