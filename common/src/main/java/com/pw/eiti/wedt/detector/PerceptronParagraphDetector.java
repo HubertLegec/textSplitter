@@ -4,6 +4,7 @@ import com.pw.eiti.wedt.model.DocSentence;
 import com.pw.eiti.wedt.model.SentenceMapper;
 import com.pw.eiti.wedt.model.SentenceRepresentation;
 import org.encog.ml.data.MLData;
+import org.encog.ml.data.basic.BasicMLData;
 import org.encog.neural.networks.BasicNetwork;
 
 public class PerceptronParagraphDetector implements ParagraphDetector {
@@ -18,8 +19,8 @@ public class PerceptronParagraphDetector implements ParagraphDetector {
     @Override
     public boolean startsNewParagraph(DocSentence sentence) {
         SentenceRepresentation sentenceRepresentation = mapper.getSentenceRepresentation(sentence);
-        MLData data = sentenceRepresentation.toMLData();
-        int result = network.classify(data);
-        return result != 0;
+        MLData data = new BasicMLData(sentenceRepresentation.toMLData());
+        double result = network.compute(data).getData(0);
+        return result > 0.5;
     }
 }

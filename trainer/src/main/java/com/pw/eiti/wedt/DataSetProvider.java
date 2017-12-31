@@ -9,12 +9,8 @@ import com.pw.eiti.wedt.utils.ConversionUtils;
 import com.pw.eiti.wedt.utils.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
-import org.encog.ml.data.MLData;
-import org.encog.ml.data.MLDataPair;
-import org.encog.ml.data.MLDataSet;
-import org.encog.ml.data.basic.BasicMLData;
-import org.encog.ml.data.basic.BasicMLDataPair;
-import org.encog.ml.data.basic.BasicMLDataSet;
+import org.encog.neural.data.NeuralDataSet;
+import org.encog.neural.data.basic.BasicNeuralDataSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,7 +32,7 @@ public class DataSetProvider {
         this.inputDir = inputDir;
     }
 
-    MLDataSet prepareDataSet() throws IOException {
+    NeuralDataSet prepareDataSet() throws IOException {
         log.info("Prepare data set...");
         try (Stream<Path> stream = Files.list(inputDir)) {
             List<Pair<SentenceRepresentation, Boolean>> sentences = stream
@@ -45,11 +41,16 @@ public class DataSetProvider {
                     .map(this::getFileSentences)
                     .flatMap(Collection::stream)
                     .collect(toList());
-            return new BasicMLDataSet(
-                    sentences.stream()
-                            .map(DataSetProvider::createMLDataPair)
-                            .collect(toList())
+            List<Pair<double[], double[]>> dataList = sentences.stream()
+                    .map(DataSetProvider::createMLDataPair)
+                    .collect(toList());
+            double[][] inputs = ConversionUtils.doubleListOfArrayToArray(
+                    dataList.stream().map(Pair::getKey).collect(toList())
             );
+            double[][] ideals = ConversionUtils.doubleListOfArrayToArray(
+                    dataList.stream().map(Pair::getValue).collect(toList())
+            );
+            return new BasicNeuralDataSet(inputs, ideals);
         }
     }
 
@@ -76,10 +77,10 @@ public class DataSetProvider {
                 .orElseThrow(() -> new RuntimeException("Can't find file: " + filename));
     }
 
-    private static MLDataPair createMLDataPair(Pair<SentenceRepresentation, Boolean> pair) {
-        MLData sentenceData = pair.getKey().toMLData();
+    private static Pair<double[], double[]> createMLDataPair(Pair<SentenceRepresentation, Boolean> pair) {
+        double[] sentenceData = pair.getKey().toMLData();
         double resultDoubleRepresentation = ConversionUtils.booleanToDouble(pair.getValue());
-        MLData resultData = new BasicMLData(new double[]{resultDoubleRepresentation});
-        return new BasicMLDataPair(sentenceData, resultData);
+        double[] resultData = new double[]{resultDoubleRepresentation};
+        return Pair.of(sentenceData, resultData);
     }
 }

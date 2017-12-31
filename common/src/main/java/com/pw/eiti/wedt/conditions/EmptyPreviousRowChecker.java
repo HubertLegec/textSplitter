@@ -9,6 +9,9 @@ import org.apache.commons.lang3.StringUtils;
 class EmptyPreviousRowChecker implements ConditionChecker {
     @Override
     public boolean checkCondition(DocSentence sentence) {
+        if (sentence.getId() == 0) {
+            return true;
+        }
         String text = sentence.getPredecessor();
         return StringUtils.contains(text, "\n\n");
     }
