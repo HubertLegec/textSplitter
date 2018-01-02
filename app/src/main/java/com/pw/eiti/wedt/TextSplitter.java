@@ -16,33 +16,33 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import org.encog.neural.networks.BasicNetwork;
+import org.w3c.dom.Document;
 
+import javax.xml.transform.TransformerException;
 import java.io.File;
+import java.util.List;
 
 
 public class TextSplitter extends Application {
     private Window window;
     @FXML
-    private Button inputFileBT;
-    @FXML
     private TextField inputFileTF;
-    @FXML
-    private Button outputFileBT;
-    @FXML
-    private TextField outputFileTF;
     @FXML
     private Button processBT;
     @FXML
+    private Button saveBT;
+    @FXML
     private TextArea inputPrevTA;
     @FXML
-    private TextArea outputPrevTA;
+    private TreeView<String> outputPrevTV;
     @FXML
     private Label statusL;
 
     private File inputFile;
     private File outputFile;
     private File modelFile;
-    private String inputContent;
+
+    private List<String> paragraphs;
 
     /**
      * The main entry point for all JavaFX applications.
@@ -76,14 +76,16 @@ public class TextSplitter extends Application {
     void onInputFileButtonClick(ActionEvent e) {
         FileChooser chooser = new FileChooser();
         inputFile = chooser.showOpenDialog(window);
-        outputPrevTA.clear();
+        outputPrevTV.setRoot(null);
         if (inputFile != null) {
             inputFileTF.setText(inputFile.getAbsolutePath());
-            inputContent = FileUtils.readFileAsString(inputFile.toPath())
+            String inputContent = FileUtils.readFileAsString(inputFile.toPath())
                     .orElse("Can't load file preview");
             inputPrevTA.setText(inputContent);
+            processBT.setDisable(false);
         } else {
             inputPrevTA.clear();
+            processBT.setDisable(true);
         }
     }
 
@@ -92,35 +94,33 @@ public class TextSplitter extends Application {
         FileChooser chooser = new FileChooser();
         outputFile = chooser.showSaveDialog(window);
         if (outputFile != null) {
-            outputFileTF.setText(outputFile.getAbsolutePath());
+            XmlGenerator generator = new XmlGenerator();
+            Document doc = generator.generateXml(paragraphs);
+            try {
+                XmlGenerator.saveDocumentToFile(doc, outputFile);
+            } catch (TransformerException ex) {
+                showDialog(ex.getMessage(), "Can't save xml to file");
+            }
         }
     }
 
     @FXML
     void onProcessButtonClick(ActionEvent e) {
-        outputPrevTA.clear();
+        outputPrevTV.setRoot(null);
         if (inputFile == null || !inputFile.isFile()) {
             showDialog("Chose input file!", "Input file error");
-            return;
-        }
-        if (outputFile == null) {
-            showDialog("Enter output file path before processing!", "Output path error");
             return;
         }
         if (modelFile == null) {
             showDialog("Load neural network model first!", "Model file error");
         }
-        try {
-            BasicNetwork network = NetworkProvider.restoreSavedNetwork(modelFile.getAbsolutePath());
-            ParagraphDetector detector = new PerceptronParagraphDetector(network, new SentenceConditionsMapper());
-            TextFileProcessor textFileProcessor = new TextFileProcessor(inputFile, outputFile, detector);
-            String result = textFileProcessor.process()
-                    .orElse("Output not available");
-            outputPrevTA.setText(result);
-        } catch (Exception ex) {
-            // TODO - change to some error message
-            outputPrevTA.setText(ex.getMessage());
-        }
+        BasicNetwork network = NetworkProvider.restoreSavedNetwork(modelFile.getAbsolutePath());
+        ParagraphDetector detector = new PerceptronParagraphDetector(network, new SentenceConditionsMapper());
+        TextFileProcessor textFileProcessor = new TextFileProcessor(inputFile, detector);
+        paragraphs = textFileProcessor.splitDocumentIntoParagraphs();
+        TreeItem<String> xmlTree = XMLTreeViewGenerator.generateTree(paragraphs);
+        outputPrevTV.setRoot(xmlTree);
+        saveBT.setDisable(false);
     }
 
     @FXML
@@ -128,9 +128,9 @@ public class TextSplitter extends Application {
         FileChooser chooser = new FileChooser();
         modelFile = chooser.showOpenDialog(window);
         if (modelFile != null) {
-
+            statusL.setText("Model loaded from file: " + modelFile.getName());
         } else {
-
+            statusL.setText("Model not loaded");
         }
     }
 

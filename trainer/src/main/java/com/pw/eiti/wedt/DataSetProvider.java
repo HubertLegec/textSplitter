@@ -19,6 +19,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
@@ -35,21 +36,15 @@ public class DataSetProvider {
     NeuralDataSet prepareDataSet() throws IOException {
         log.info("Prepare data set...");
         try (Stream<Path> stream = Files.list(inputDir)) {
-            List<Pair<SentenceRepresentation, Boolean>> sentences = stream
+            List<Pair<double[], double[]>> dataList = stream
                     .filter(Files::isRegularFile)
                     .filter(p -> StringUtils.endsWith(p.getFileName().toString(), "_raw.txt"))
                     .map(this::getFileSentences)
                     .flatMap(Collection::stream)
-                    .collect(toList());
-            List<Pair<double[], double[]>> dataList = sentences.stream()
                     .map(DataSetProvider::createMLDataPair)
                     .collect(toList());
-            double[][] inputs = ConversionUtils.doubleListOfArrayToArray(
-                    dataList.stream().map(Pair::getKey).collect(toList())
-            );
-            double[][] ideals = ConversionUtils.doubleListOfArrayToArray(
-                    dataList.stream().map(Pair::getValue).collect(toList())
-            );
+            double[][] inputs = dataListToArray(dataList, Pair::getKey);
+            double[][] ideals = dataListToArray(dataList, Pair::getValue);
             return new BasicNeuralDataSet(inputs, ideals);
         }
     }
@@ -72,9 +67,18 @@ public class DataSetProvider {
         log.info("Get start paragraph sentence ids from file: " + filename);
         return FileUtils.findFileInDirectory(inputDir, filename)
                 .map(FileUtils::readFileAsString)
-                .map(s -> s.orElse(""))
+                .map(s -> s.orElseThrow(() -> new RuntimeException("Can't read file: " + filename)))
                 .map(s -> ConversionUtils.stringToListOfInt(s, ","))
                 .orElseThrow(() -> new RuntimeException("Can't find file: " + filename));
+    }
+
+    private static double[][] dataListToArray(List<Pair<double[], double[]>> dataList,
+                                              Function<? super Pair<double[], double[]>, ? extends double[]> mapper) {
+        return ConversionUtils.doubleListOfArrayToArray(
+                dataList.stream()
+                        .map(mapper)
+                        .collect(toList())
+        );
     }
 
     private static Pair<double[], double[]> createMLDataPair(Pair<SentenceRepresentation, Boolean> pair) {

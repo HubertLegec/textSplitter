@@ -6,10 +6,8 @@ import com.pw.eiti.wedt.model.Document;
 import edu.stanford.nlp.util.Pair;
 
 import java.io.File;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -19,29 +17,14 @@ import static java.util.stream.Collectors.*;
 class TextFileProcessor {
     private static final Logger logger = Logger.getLogger(TextFileProcessor.class.getName());
     private File inputFile;
-    private File outputFile;
     private ParagraphDetector detector;
 
-    TextFileProcessor(File inputFile, File outputFile, ParagraphDetector detector) {
+    TextFileProcessor(File inputFile, ParagraphDetector detector) {
         this.inputFile = inputFile;
-        this.outputFile = outputFile;
         this.detector = detector;
     }
 
-    /**
-     * Splits text from given text file into paragraphs and saves it as XML file
-     *
-     * @return created XML
-     */
-    Optional<String> process() throws Exception {
-        Collection<String> paragraphs = splitDocumentIntoParagraphs();
-        XmlGenerator xmlGenerator = new XmlGenerator();
-        xmlGenerator.generateXml(paragraphs);
-        xmlGenerator.saveDocumentToFile(outputFile);
-        return xmlGenerator.getDocumentAsString();
-    }
-
-    private Collection<String> splitDocumentIntoParagraphs() {
+    List<String> splitDocumentIntoParagraphs() {
         logger.info("Split document into paragraphs");
         Document document = new Document(inputFile.toPath());
         AtomicInteger paragraphIdx = new AtomicInteger(-1);

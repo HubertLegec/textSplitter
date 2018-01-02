@@ -1,5 +1,7 @@
 package com.pw.eiti.wedt;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -9,83 +11,66 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.Collection;
 import java.util.Optional;
-import java.util.logging.Logger;
 
 class XmlGenerator {
-    private static final Logger logger = Logger.getLogger(XmlGenerator.class.getName());
-    private Document doc;
-    private TransformerFactory transformerFactory = TransformerFactory.newInstance();
+    private static final Logger log = LoggerFactory.getLogger(XmlGenerator.class);
 
+    Document generateXml(Collection<String> sections) {
+        log.info("Generate xml");
+        Document doc = createDocument()
+                .orElseThrow(() -> new RuntimeException("Can't create new XML document"));
+        Element rootElement = doc.createElement("document");
+        doc.appendChild(rootElement);
+        sections.stream()
+                .map(String::trim)
+                .map(s -> createParagraph(s, doc))
+                .forEach(rootElement::appendChild);
+        return doc;
+    }
 
-    void generateXml(Collection<String> sections) {
-        logger.info("Generate xml");
+    static void saveDocumentToFile(Document doc, File outputFile) throws TransformerException {
+        log.info("Save document to file: " + outputFile.getName());
+        DOMSource source = new DOMSource(doc);
+        StreamResult result = new StreamResult(outputFile);
+        Transformer transformer = getXmlTransformer()
+                .orElseThrow(() -> new RuntimeException("Can't create XMLTransformer"));
+        transformer.transform(source, result);
+    }
+
+    private Optional<Document> createDocument() {
+        log.info("Create document");
         try {
-            createDocument();
-
-            // root elements
-            Element rootElement = doc.createElement("document");
-            doc.appendChild(rootElement);
-            sections.stream()
-                    .map(this::createParagraph)
-                    .forEach(rootElement::appendChild);
+            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+            return Optional.of(docBuilder.newDocument());
         } catch (ParserConfigurationException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
+            return Optional.empty();
         }
     }
 
-    private void createDocument() throws ParserConfigurationException {
-        logger.info("Create document");
-        DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-        this.doc = docBuilder.newDocument();
-    }
-
-    private Element createParagraph(String text) {
+    private Element createParagraph(String text, Document doc) {
         Element elem = doc.createElement("p");
         elem.appendChild(doc.createTextNode(text));
         return elem;
     }
 
-    Optional<Document> getDocument() {
-        return Optional.of(doc);
-    }
-
-    void saveDocumentToFile(File outputFile) throws Exception {
-        logger.info("Save document to file: " + outputFile.getName());
-        Transformer transformer = getXmlTransformer();
-        DOMSource source = new DOMSource(doc);
-        StreamResult result = new StreamResult(outputFile);
-
-        // Output to console for testing
-        // StreamResult result = new StreamResult(System.out);
-
-        transformer.transform(source, result);
-    }
-
-    Optional<String> getDocumentAsString() throws TransformerException {
-        logger.info("Get document as string");
-        DOMSource source = new DOMSource(doc);
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        StreamResult result = new StreamResult(outputStream);
-        Transformer transformer = getXmlTransformer();
-        transformer.transform(source, result);
-        return Optional.of(outputStream)
-                .filter(out -> out.size() > 0)
-                .map(ByteArrayOutputStream::toByteArray)
-                .map(String::new);
-    }
-
-    private Transformer getXmlTransformer() throws TransformerConfigurationException {
-        Transformer transformer = transformerFactory.newTransformer();
-        transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
-        transformer.setOutputProperty(OutputKeys.METHOD, "xml");
-        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-        transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-        transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
-        return transformer;
+    private static Optional<Transformer> getXmlTransformer() {
+        try {
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "no");
+            transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+            transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+            transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+            transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "4");
+            return Optional.of(transformer);
+        } catch (TransformerConfigurationException e) {
+            log.error(e.getMessage());
+            return Optional.empty();
+        }
     }
 }

@@ -50,7 +50,7 @@ public class Document {
                 .collect(toList());
     }
 
-    static int calculateRowFromSentenceOffset(int offset, String documentContent) {
+    private static int calculateRowFromSentenceOffset(int offset, String documentContent) {
         String subString = StringUtils.substring(documentContent, 0, offset);
         return StringUtils.countMatches(subString, "\n");
     }
