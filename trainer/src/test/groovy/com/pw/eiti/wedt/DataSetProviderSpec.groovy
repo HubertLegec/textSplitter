@@ -11,7 +11,7 @@ class DataSetProviderSpec extends Specification {
     def "file sentence pairs are created correctly"() {
         given: "input file and paragraph sentence indexes"
             Path dirPath = Paths.get(getClass().getResource("/dataSet").path)
-            Path filePath = Paths.get(getClass().getResource("/dataSet/reut_raw.txt").path)
+            Path filePath = Paths.get(getClass().getResource("/dataSet/reut.txt").path)
             DataSetProvider provider = new DataSetProvider(dirPath)
         when: "sentences are generated"
             def result = provider.getFileSentences(filePath)
