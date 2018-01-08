@@ -1,7 +1,11 @@
 package com.pw.eiti.wedt.conditions
 
 import com.pw.eiti.wedt.model.DocSentence
+import com.pw.eiti.wedt.model.Document
 import spock.lang.Specification
+
+import java.nio.file.Path
+import java.nio.file.Paths
 
 class EmptyPreviousRowCheckerSpec extends Specification {
     ConditionChecker checker = new EmptyPreviousRowChecker()
@@ -31,5 +35,19 @@ class EmptyPreviousRowCheckerSpec extends Specification {
             boolean result = checker.checkCondition(sentence)
         then: 'result should be negative'
             result == true
+    }
+
+    def 'avanced example'() {
+        given: 'document with one empyty line'
+            Path file = Paths.get(getClass().getResource("/empty_previous.txt").file)
+            Document document = new Document(file)
+        when: 'condition is checked'
+            boolean result0 = checker.checkCondition(document.getSentences()[0])
+            boolean result1 = checker.checkCondition(document.getSentences()[1])
+            boolean result3 = checker.checkCondition(document.getSentences()[3])
+        then: 'result should be positive'
+            result0 == true
+            result1 == false
+            result3 == true
     }
 }
