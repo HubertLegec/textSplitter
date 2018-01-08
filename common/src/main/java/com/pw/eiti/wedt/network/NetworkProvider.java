@@ -1,7 +1,6 @@
 package com.pw.eiti.wedt.network;
 
-import org.encog.engine.network.activation.ActivationReLU;
-import org.encog.engine.network.activation.ActivationSigmoid;
+import org.encog.engine.network.activation.ActivationElliott;
 import org.encog.neural.networks.BasicNetwork;
 import org.encog.neural.networks.layers.BasicLayer;
 import org.encog.persist.EncogDirectoryPersistence;
@@ -12,8 +11,7 @@ public class NetworkProvider {
     public static BasicNetwork createNetwork(int inputSize) {
         final BasicNetwork network = new BasicNetwork();
         network.addLayer(new BasicLayer(null, true, inputSize));
-        network.addLayer(new BasicLayer(new ActivationReLU(), true, 2 * inputSize));
-        network.addLayer(new BasicLayer(new ActivationSigmoid(), false, 1));
+        network.addLayer(new BasicLayer(new ActivationElliott(), false, 1));
         network.getStructure().finalizeStructure();
         network.reset();
         return network;

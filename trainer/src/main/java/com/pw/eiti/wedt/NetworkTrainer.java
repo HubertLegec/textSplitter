@@ -16,10 +16,11 @@ public class NetworkTrainer {
     public static void main(String[] args) {
         try {
             CommandLine cmd = argumentParser.parse(args);
-            String inputDir = cmd.getOptionValue("input");
+            String inputDir = cmd.getOptionValue("train");
+            String testDir = cmd.getOptionValue("test");
             String modelFileName = cmd.getOptionValue("output");
             log.info("Create trainer...");
-            ModelTrainer trainer = new ModelTrainer(inputDir, inputDir);
+            ModelTrainer trainer = new ModelTrainer(inputDir, testDir);
             log.info("Train model...");
             BasicNetwork networkModel = trainer.train();
             log.info("Save model to file: " + modelFileName);

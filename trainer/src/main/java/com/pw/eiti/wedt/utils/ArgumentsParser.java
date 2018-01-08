@@ -7,10 +7,13 @@ public class ArgumentsParser {
 
     public ArgumentsParser() {
         this.options = new Options();
-        Option inputDir = new Option("i", "input", true, "input directory");
-        inputDir.setRequired(true);
-        options.addOption(inputDir);
-        Option modelPath = new Option("o", "output", true, "trained model path");
+        Option trainDir = new Option("t", "train", true, "Train data directory");
+        trainDir.setRequired(true);
+        options.addOption(trainDir);
+        Option testDir = new Option("v", "validation", true, "Test data directory");
+        testDir.setRequired(true);
+        options.addOption(testDir);
+        Option modelPath = new Option("o", "output", true, "Trained model path");
         modelPath.setRequired(true);
         options.addOption(modelPath);
     }
