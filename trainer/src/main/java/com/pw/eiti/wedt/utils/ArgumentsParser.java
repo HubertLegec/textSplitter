@@ -16,6 +16,9 @@ public class ArgumentsParser {
         Option modelPath = new Option("o", "output", true, "Trained model path");
         modelPath.setRequired(true);
         options.addOption(modelPath);
+        Option error = new Option("e", "error", true, "Training error threshold");
+        modelPath.setRequired(true);
+        options.addOption(error);
     }
 
     public CommandLine parse(String[] args) throws ParseException {

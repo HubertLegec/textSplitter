@@ -29,17 +29,15 @@ public class ModelTrainer {
     private final BasicNetwork network;
     private Duration trainingTime = null;
 
-    public ModelTrainer(String inputDir, String testDir) {
-        this(inputDir, testDir, 8, 0.01);
+    public ModelTrainer(String inputDir, String testDir, double errorThreshold) {
+        this(inputDir, testDir, 8, errorThreshold);
     }
 
     public ModelTrainer(String inputDir, String testDir, int inputSize, double errorThreshold) {
-        assert Files.isDirectory(Paths.get(inputDir));
-        assert Files.isDirectory(Paths.get(testDir));
-        // TODO - to be changed at the end of development
-        // this.inputDir = Paths.get(inputDir);
-        Path inputDirPath = Paths.get(getClass().getResource("/training").getPath());
-        Path testDirPath = Paths.get(getClass().getResource("/test").getPath());
+        Path inputDirPath = Paths.get(inputDir);
+        Path testDirPath = Paths.get(testDir);
+        checkIsDirectory(inputDirPath);
+        checkIsDirectory(testDirPath);
         this.dataSetProvider = new DataSetProvider(inputDirPath);
         this.testDataSetProvider = new DataSetProvider(testDirPath);
         this.network = NetworkProvider.createNetwork(inputSize);
@@ -81,6 +79,12 @@ public class ModelTrainer {
                 p.getIdeal().getData(0),
                 network.compute(p.getInput()).getData(0)
         );
+    }
+
+    private void checkIsDirectory(Path dirPath) {
+        if (!Files.isDirectory(dirPath)) {
+            throw new RuntimeException(dirPath + " is not a directory");
+        }
     }
 
 }

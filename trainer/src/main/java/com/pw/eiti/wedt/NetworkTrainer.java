@@ -18,9 +18,10 @@ public class NetworkTrainer {
             CommandLine cmd = argumentParser.parse(args);
             String inputDir = cmd.getOptionValue("train");
             String testDir = cmd.getOptionValue("test");
+            Double error = Double.parseDouble(cmd.getOptionValue("error"));
             String modelFileName = cmd.getOptionValue("output");
             log.info("Create trainer...");
-            ModelTrainer trainer = new ModelTrainer(inputDir, testDir);
+            ModelTrainer trainer = new ModelTrainer(inputDir, testDir, error);
             log.info("Train model...");
             BasicNetwork networkModel = trainer.train();
             log.info("Save model to file: " + modelFileName);
