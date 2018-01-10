@@ -37,15 +37,15 @@ class EmptyPreviousRowCheckerSpec extends Specification {
             result == true
     }
 
-    def 'avanced example'() {
+    def 'advanced example'() {
         given: 'document with one empyty line'
             Path file = Paths.get(getClass().getResource("/empty_previous.txt").file)
             Document document = new Document(file)
-        when: 'condition is checked'
+        when: 'conditions are checked'
             boolean result0 = checker.checkCondition(document.getSentences()[0])
             boolean result1 = checker.checkCondition(document.getSentences()[1])
             boolean result3 = checker.checkCondition(document.getSentences()[3])
-        then: 'result should be positive'
+        then:
             result0 == true
             result1 == false
             result3 == true
