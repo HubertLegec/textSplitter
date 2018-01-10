@@ -6,7 +6,12 @@ public class TestResultEntry {
     private boolean ideal;
     private boolean actual;
 
-    public TestResultEntry(double ideal, double actual) {
+    TestResultEntry(boolean ideal, boolean actual) {
+        this.ideal = ideal;
+        this.actual = actual;
+    }
+
+    TestResultEntry(double ideal, double actual) {
         this.ideal = ConversionUtils.doubleToBoolean(ideal);
         this.actual = actual > 0.5;
     }

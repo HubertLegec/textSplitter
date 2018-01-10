@@ -1,12 +1,9 @@
-package com.pw.eiti.wedt;
+package com.pw.eiti.wedt.data;
 
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import com.pw.eiti.wedt.conditions.SentenceConditionsMapper;
-import com.pw.eiti.wedt.model.DocSentence;
-import com.pw.eiti.wedt.model.Document;
-import com.pw.eiti.wedt.model.SentenceMapper;
-import com.pw.eiti.wedt.model.SentenceRepresentation;
+import com.pw.eiti.wedt.model.*;
 import com.pw.eiti.wedt.utils.ConversionUtils;
 import com.pw.eiti.wedt.utils.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -36,11 +33,11 @@ public class DataSetProvider {
     private final SentenceMapper mapper = new SentenceConditionsMapper();
     private final Path inputDir;
 
-    DataSetProvider(Path inputDir) {
+    public DataSetProvider(Path inputDir) {
         this.inputDir = inputDir;
     }
 
-    MLDataSet prepareDataSet() throws IOException {
+    public MLDataSet prepareDataSet() throws IOException {
         log.info("Prepare data set...");
         try (Stream<Path> stream = Files.list(inputDir)) {
             List<Pair<double[], double[]>> dataList = stream
@@ -53,6 +50,18 @@ public class DataSetProvider {
             double[][] inputs = dataListToArray(dataList, Pair::getKey);
             double[][] ideals = dataListToArray(dataList, Pair::getValue);
             return new BasicMLDataSet(inputs, ideals);
+        }
+    }
+
+    public List<Pair<SentenceRepresentation, Boolean>> prepareTestDataSet() throws IOException {
+        log.info("Prepare data set...");
+        try (Stream<Path> stream = Files.list(inputDir)) {
+            return stream
+                    .filter(Files::isRegularFile)
+                    .filter(p -> StringUtils.endsWith(p.getFileName().toString(), TXT_FILE_EXTENSION))
+                    .map(this::getFileSentences)
+                    .flatMap(Collection::stream)
+                    .collect(toList());
         }
     }
 

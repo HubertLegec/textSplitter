@@ -1,6 +1,7 @@
 package com.pw.eiti.wedt
 
 import com.pw.eiti.wedt.conditions.SentenceConditions
+import com.pw.eiti.wedt.data.DataSetProvider
 import spock.lang.Specification
 
 import java.nio.file.Path

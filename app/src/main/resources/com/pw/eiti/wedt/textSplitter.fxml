@@ -6,8 +6,6 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToolBar?>
@@ -16,7 +14,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="800.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pw.eiti.wedt.TextSplitter">
+<BorderPane prefHeight="800.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.pw.eiti.wedt.TextSplitter">
     <top>
         <MenuBar>
             <Menu text="Model">
@@ -47,19 +45,22 @@
                         <Insets top="10.0" />
                     </VBox.margin>
                 </HBox>
-                <TabPane VBox.vgrow="ALWAYS">
-                    <Tab closable="false" text="Input file">
-                        <TextArea fx:id="inputPrevTA" editable="false" promptText="Input preview..." VBox.vgrow="ALWAYS">
-                        </TextArea>
-                    </Tab>
-                    <Tab closable="false" text="Output file">
-                        <TreeView fx:id="outputPrevTV" editable="false" VBox.vgrow="ALWAYS">
-                        </TreeView>
-                    </Tab>
-                    <VBox.margin>
-                        <Insets top="10.0" />
-                    </VBox.margin>
-                </TabPane>
+                <HBox spacing="5.0" VBox.vgrow="ALWAYS">
+                    <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                        <Label text="Input preview"/>
+                        <TextArea fx:id="inputPrevTA" editable="false" minWidth="400.0" promptText="Input preview..." VBox.vgrow="ALWAYS" />
+                    </VBox>
+                    <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                        <Label text="Output preview"/>
+                        <TreeView fx:id="outputPrevTV" editable="false" minWidth="400.0" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" />
+                    </VBox>
+               <VBox.margin>
+                  <Insets top="10.0" />
+               </VBox.margin>
+               <padding>
+                  <Insets left="5.0" right="5.0" />
+               </padding>
+                </HBox>
             </children>
         </VBox>
     </center>

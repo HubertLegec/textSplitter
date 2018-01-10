@@ -1,4 +1,4 @@
-package com.pw.eiti.wedt;
+package com.pw.eiti.wedt.data;
 
 import java.util.ArrayList;
 import java.util.List;

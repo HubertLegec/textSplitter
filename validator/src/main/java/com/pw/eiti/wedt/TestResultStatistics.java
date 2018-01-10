@@ -52,7 +52,8 @@ public class TestResultStatistics {
     @Override
     public String toString() {
         return String.format(
-                "Data size: %d\nPrecision: %s\nRecall: %s\n", getDataSize(), getPrecision(), getRecall()
+                "Data size: %d\nPrecision: %s\nRecall: %s\n",
+                getDataSize(), getPrecision(), getRecall()
         );
     }
 }

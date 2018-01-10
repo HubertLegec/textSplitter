@@ -1,18 +1,15 @@
-package com.pw.eiti.wedt.utils;
+package com.pw.eiti.wedt;
 
 import org.apache.commons.cli.*;
 
-public class ArgumentsParser {
+class TrainerArgumentsParser {
     private final Options options;
 
-    public ArgumentsParser() {
+    TrainerArgumentsParser() {
         this.options = new Options();
         Option trainDir = new Option("t", "train", true, "Train data directory");
         trainDir.setRequired(true);
         options.addOption(trainDir);
-        Option testDir = new Option("v", "validation", true, "Test data directory");
-        testDir.setRequired(true);
-        options.addOption(testDir);
         Option modelPath = new Option("o", "output", true, "Trained model path");
         modelPath.setRequired(true);
         options.addOption(modelPath);
@@ -21,12 +18,12 @@ public class ArgumentsParser {
         options.addOption(error);
     }
 
-    public CommandLine parse(String[] args) throws ParseException {
+    CommandLine parse(String[] args) throws ParseException {
         CommandLineParser parser = new DefaultParser();
         return parser.parse(options, args);
     }
 
-    public void printHelp() {
+    void printHelp() {
         HelpFormatter formatter = new HelpFormatter();
         formatter.printHelp("utility-name", options);
     }

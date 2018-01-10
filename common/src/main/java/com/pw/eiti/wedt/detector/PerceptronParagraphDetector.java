@@ -19,6 +19,11 @@ public class PerceptronParagraphDetector implements ParagraphDetector {
     @Override
     public boolean startsNewParagraph(DocSentence sentence) {
         SentenceRepresentation sentenceRepresentation = mapper.getSentenceRepresentation(sentence);
+        return startNewParagraph(sentenceRepresentation);
+    }
+
+    @Override
+    public boolean startNewParagraph(SentenceRepresentation sentenceRepresentation) {
         MLData data = new BasicMLData(sentenceRepresentation.toMLData());
         double result = network.compute(data).getData(0);
         return result > 0.5;
