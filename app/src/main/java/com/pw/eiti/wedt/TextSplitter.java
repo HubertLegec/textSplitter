@@ -1,6 +1,7 @@
 package com.pw.eiti.wedt;
 
 import com.pw.eiti.wedt.conditions.SentenceConditionsMapper;
+import com.pw.eiti.wedt.detector.CustomParagraphDetector;
 import com.pw.eiti.wedt.detector.ParagraphDetector;
 import com.pw.eiti.wedt.detector.PerceptronParagraphDetector;
 import com.pw.eiti.wedt.network.NetworkProvider;
@@ -37,6 +38,8 @@ public class TextSplitter extends Application {
     private TreeView<String> outputPrevTV;
     @FXML
     private Label statusL;
+    @FXML
+    private ToggleButton modeBT;
 
     private File inputFile;
     private File outputFile;
@@ -98,8 +101,7 @@ public class TextSplitter extends Application {
         if (modelFile == null) {
             showDialog("Load neural network model first!", "Model file error");
         }
-        BasicNetwork network = NetworkProvider.restoreSavedNetwork(modelFile.getAbsolutePath());
-        ParagraphDetector detector = new PerceptronParagraphDetector(network, new SentenceConditionsMapper());
+        ParagraphDetector detector = getParagraphDetector();
         TextFileProcessor textFileProcessor = new TextFileProcessor(inputFile, detector);
         paragraphs = textFileProcessor.splitDocumentIntoParagraphs();
         TreeItem<String> xmlTree = XMLTreeViewGenerator.generateTree(paragraphs);
@@ -116,6 +118,20 @@ public class TextSplitter extends Application {
         } else {
             statusL.setText("Model not loaded");
         }
+    }
+
+    @FXML
+    void onModeButtonClick(ActionEvent e) {
+        String newText = modeBT.getText().equals("Neural network") ? "Custom" : "Neural network";
+        modeBT.setText(newText);
+    }
+
+    private ParagraphDetector getParagraphDetector() {
+        if (modeBT.getText().equals("Custom")) {
+            return new CustomParagraphDetector(new SentenceConditionsMapper());
+        }
+        BasicNetwork network = NetworkProvider.restoreSavedNetwork(modelFile.getAbsolutePath());
+        return new PerceptronParagraphDetector(network, new SentenceConditionsMapper());
     }
 
     private void showDialog(String message, String header) {

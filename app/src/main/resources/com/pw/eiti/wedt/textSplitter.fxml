@@ -8,6 +8,7 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.control.TreeView?>
 <?import javafx.scene.layout.BorderPane?>
@@ -25,6 +26,13 @@
     <center>
         <VBox prefWidth="100.0">
             <children>
+                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                    <Label>Mode</Label>
+                    <ToggleButton fx:id="modeBT" minWidth="150.0" text="Neural network" onAction="#onModeButtonClick"/>
+                    <VBox.margin>
+                        <Insets left="5.0" top="10.0" />
+                    </VBox.margin>
+                </HBox>
                 <Label text="Input file">
                     <VBox.margin>
                         <Insets left="5.0" top="10.0" />
@@ -47,11 +55,11 @@
                 </HBox>
                 <HBox spacing="5.0" VBox.vgrow="ALWAYS">
                     <VBox spacing="5.0" HBox.hgrow="ALWAYS">
-                        <Label text="Input preview"/>
+                        <Label text="Input preview" />
                         <TextArea fx:id="inputPrevTA" editable="false" minWidth="400.0" promptText="Input preview..." VBox.vgrow="ALWAYS" />
                     </VBox>
                     <VBox spacing="5.0" HBox.hgrow="ALWAYS">
-                        <Label text="Output preview"/>
+                        <Label text="Output preview" />
                         <TreeView fx:id="outputPrevTV" editable="false" minWidth="400.0" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" />
                     </VBox>
                <VBox.margin>
