@@ -24,14 +24,14 @@ public class CustomParagraphDetector implements ParagraphDetector {
         if (representation.isFirstSentence) {
             return true;
         }
-        /*if (representation.notFirstSentenceInLine) {
+        if (representation.notFirstSentenceInLine) {
             return false;
         }
         if (representation.isEmptyPreviousRow) {
             return true;
-        }*/
-        if (representation.isEmptyPreviousRow) {
-            return true;
+        }
+        if (representation.isListItem) {
+            return false;
         }
         if (representation.hasPrecedingTab && representation.startsNewLine && representation.hasShorterPreviousRow) {
             return true;

@@ -98,8 +98,9 @@ public class TextSplitter extends Application {
             showDialog("Chose input file!", "Input file error");
             return;
         }
-        if (modelFile == null) {
+        if (modelFile == null && modeBT.getText().equals("Neural network")) {
             showDialog("Load neural network model first!", "Model file error");
+            return;
         }
         ParagraphDetector detector = getParagraphDetector();
         TextFileProcessor textFileProcessor = new TextFileProcessor(inputFile, detector);
