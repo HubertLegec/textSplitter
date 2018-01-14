@@ -25,7 +25,7 @@ public class ModelTrainer {
     private Duration trainingTime = null;
 
     public ModelTrainer(String inputDir, double errorThreshold) {
-        this(inputDir, 8, errorThreshold);
+        this(inputDir, 7, errorThreshold);
     }
 
     public ModelTrainer(String inputDir, int inputSize, double errorThreshold) {

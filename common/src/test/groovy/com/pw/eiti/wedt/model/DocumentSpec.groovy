@@ -62,7 +62,7 @@ class DocumentSpec extends Specification {
 
     def "reuters file model is created correctly"() {
         given: "reuters file"
-            Path file = Paths.get(getClass().getResource("/reut_raw.txt").file)
+            Path file = getFile("reut_raw.txt")
         when: "model is created"
             Document document = new Document(file)
         then: "it has correct sentence and line division"
@@ -85,5 +85,9 @@ class DocumentSpec extends Specification {
             sentence17.endRow == 53
             sentence17.predecessor == "\n  "
             sentence17.id == 16
+    }
+
+    private Path getFile(String fileName) {
+        return Paths.get(getClass().getResource("/" + fileName).file)
     }
 }

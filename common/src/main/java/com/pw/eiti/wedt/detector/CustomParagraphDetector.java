@@ -30,7 +30,10 @@ public class CustomParagraphDetector implements ParagraphDetector {
         if (representation.isEmptyPreviousRow) {
             return true;
         }*/
-        if (representation.hasPrecedingTab && representation.startsNewLine) {
+        if (representation.isEmptyPreviousRow) {
+            return true;
+        }
+        if (representation.hasPrecedingTab && representation.startsNewLine && representation.hasShorterPreviousRow) {
             return true;
         }
         return false;

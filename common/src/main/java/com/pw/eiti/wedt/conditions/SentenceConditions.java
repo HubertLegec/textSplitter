@@ -10,7 +10,6 @@ import java.util.stream.Stream;
 public class SentenceConditions implements SentenceRepresentation {
     public boolean isEmptyPreviousRow;
     public boolean isFirstSentence;
-    public boolean hasLinkingWords;
     public boolean isListItem;
     public boolean hasPrecedingTab;
     public boolean hasShorterPreviousRow;
@@ -20,7 +19,7 @@ public class SentenceConditions implements SentenceRepresentation {
     @Override
     public double[] toMLData() {
         List<Double> conditionsList = Stream.of(
-                isEmptyPreviousRow, isFirstSentence, hasPrecedingTab, hasLinkingWords,
+                isEmptyPreviousRow, isFirstSentence, hasPrecedingTab,
                 hasShorterPreviousRow, startsNewLine, notFirstSentenceInLine, isListItem
         ).map(ConversionUtils::booleanToDouble)
                 .collect(Collectors.toList());
