@@ -8,4 +8,10 @@ allprojects {
 subprojects {
     group 'com.pw.eiti.wedt'
     version '1.0'
+
+    apply plugin: 'java'
+    apply plugin: 'groovy'
+
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
 }
