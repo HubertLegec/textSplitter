@@ -3,6 +3,9 @@ package com.pw.eiti.wedt;
 
 import org.apache.commons.cli.*;
 
+/**
+ * Class that contains definitions of app parameters, that must be provided when the app is started
+ */
 class ValidatorArgumentsParser {
     private final Options options;
 

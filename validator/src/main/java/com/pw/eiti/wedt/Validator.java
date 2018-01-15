@@ -19,6 +19,11 @@ import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
+/**
+ * Paragraph detection methods validator.
+ * It can check results of neural network and custom detection method.
+ * Methods are validated on given test set.
+ */
 public class Validator {
     private static final Logger log = LoggerFactory.getLogger(Validator.class);
     private final DataSetProvider dataSetProvider;
@@ -27,6 +32,11 @@ public class Validator {
     private TestResultStatistics networkResult;
     private TestResultStatistics customResult;
 
+    /**
+     * Main constructor
+     * @param testDir directory with test files
+     * @param modelFile optional argument. Should be provided when network model is validated.
+     */
     public Validator(String testDir, String modelFile) {
         //Path testDirPath = Paths.get(testDir);
         Path testDirPath = Paths.get(getClass().getResource("/test").getPath());
@@ -42,6 +52,10 @@ public class Validator {
         customParagraphDetector = new CustomParagraphDetector(new SentenceConditionsMapper());
     }
 
+    /**
+     * Validates network model and custom method on given test set
+     * @throws IOException when given data set is not valid
+     */
     public void validate() throws IOException {
         log.info("Validation start...");
         List<Pair<SentenceRepresentation, Boolean>> dataSet = dataSetProvider.prepareTestDataSet();

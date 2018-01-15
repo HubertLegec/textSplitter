@@ -2,6 +2,9 @@ package com.pw.eiti.wedt;
 
 import java.util.List;
 
+/**
+ * Representation of validation result
+ */
 public class TestResultStatistics {
     private final List<TestResultEntry> entries;
 
