@@ -3,6 +3,9 @@ package com.pw.eiti.wedt.data;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Java representation of JSON file with document description.
+ */
 public class DocumentDescription {
     private int sentencesCount;
     private int paragraphsCount;

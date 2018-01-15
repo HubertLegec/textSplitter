@@ -7,7 +7,15 @@ import org.encog.persist.EncogDirectoryPersistence;
 
 import java.io.File;
 
+/**
+ * This class provides methods that allow to:
+ *  - create new network of specified size
+ *  - save network to file
+ *  - restore network from file
+ */
 public class NetworkProvider {
+    private NetworkProvider() {}
+
     public static BasicNetwork createNetwork(int inputSize) {
         final BasicNetwork network = new BasicNetwork();
         network.addLayer(new BasicLayer(null, true, inputSize));

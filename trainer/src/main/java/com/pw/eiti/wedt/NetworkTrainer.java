@@ -12,6 +12,7 @@ import java.io.IOException;
 public class NetworkTrainer {
     private static final Logger log = LoggerFactory.getLogger(NetworkTrainer.class);
     private static final TrainerArgumentsParser argumentParser = new TrainerArgumentsParser();
+
     public static void main(String[] args) {
         try {
             CommandLine cmd = argumentParser.parse(args);
@@ -28,11 +29,11 @@ public class NetworkTrainer {
             log.info("Model saved.");
             System.exit(0);
         } catch (ParseException e) {
-            System.out.println(e.getMessage());
+            log.error(e.getMessage());
             argumentParser.printHelp();
             System.exit(1);
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            log.error(e.getMessage());
             System.exit(1);
         }
     }

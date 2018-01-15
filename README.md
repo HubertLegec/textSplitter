@@ -29,12 +29,11 @@ W kolejnym kroku lista takich zdań i elementów je otaczających będzie dalej 
 
 1. Czy jest to pierwsze zdanie w tekście.
 2. Czy zdanie rozpoczyna nową linię.
-3. Czy bezpośrednio przed zdaniem znajdował się znak nowej linii.
-4. Czy wiersz powyżej zdania był pusty.
-5. Czy bezpośrednio przed zdaniem znajdował się znak tabulacji.
-6. Czy wiersz poprzedzający ten, w którym rozpoczyna się zdanie był krótszy od poprzedzającego go wiersza.
-7. Czy zdanie to element listy (punktowanej lub numerowanej).
-8. Czy zdanie rozpoczyna się frazą charakterystyczną dla nowego paragrafu (przygotowana zostanie lista takich fraz dla języka angielskiego)
-9. W razie potrzeby dodatkowe warunki...
+3. Czy wiersz powyżej zdania był pusty.
+4. Czy bezpośrednio przed zdaniem znajdował się znak tabulacji.
+5. Czy wiersz poprzedzający ten, w którym rozpoczyna się zdanie był krótszy od poprzedzającego go wiersza.
+6. Czy zdanie to element listy (punktowanej lub numerowanej).
+7. Czy zdanie znajduje się w środku wiersza.
+
 
 

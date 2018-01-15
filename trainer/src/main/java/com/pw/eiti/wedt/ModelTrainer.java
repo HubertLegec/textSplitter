@@ -17,18 +17,25 @@ import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.Instant;
 
-public class ModelTrainer {
+/**
+ * Trainer class. It represents training process:
+ *  - create new network model
+ *  - prepare data set
+ *  - train model until error become lower than threshold
+ *  - return trained model
+ */
+class ModelTrainer {
     private static final Logger log = LoggerFactory.getLogger(ModelTrainer.class);
     private final double errorThreshold;
     private final DataSetProvider dataSetProvider;
     private final BasicNetwork network;
     private Duration trainingTime = null;
 
-    public ModelTrainer(String inputDir, double errorThreshold) {
+    ModelTrainer(String inputDir, double errorThreshold) {
         this(inputDir, 7, errorThreshold);
     }
 
-    public ModelTrainer(String inputDir, int inputSize, double errorThreshold) {
+    ModelTrainer(String inputDir, int inputSize, double errorThreshold) {
         /*Path inputDirPath = Paths.get(inputDir);*/
         Path inputDirPath = Paths.get(getClass().getResource("/training").getPath());
         checkIsDirectory(inputDirPath);
@@ -37,7 +44,7 @@ public class ModelTrainer {
         this.errorThreshold = errorThreshold;
     }
 
-    public BasicNetwork train() throws IOException {
+    BasicNetwork train() throws IOException {
         final MLDataSet dataSet = dataSetProvider.prepareDataSet();
         final Train train = new ResilientPropagation(network, dataSet);
         int epoch = 1;
