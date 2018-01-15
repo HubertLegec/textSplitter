@@ -14,16 +14,29 @@ import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.*;
 
+/**
+ * This class can be used to split txt document into paragraphs.
+ * It requires {@code ParagraphDetector} instance to detect paragraphs.
+ */
 class TextFileProcessor {
     private static final Logger logger = Logger.getLogger(TextFileProcessor.class.getName());
     private File inputFile;
     private ParagraphDetector detector;
 
+    /**
+     * Main constructor
+     * @param inputFile file to split into paragraphs
+     * @param detector {@code ParagraphDetector implementation}
+     */
     TextFileProcessor(File inputFile, ParagraphDetector detector) {
         this.inputFile = inputFile;
         this.detector = detector;
     }
 
+    /**
+     * Splits file passed in constructor into paragraphs
+     * @return list of paragraphs found in file
+     */
     List<String> splitDocumentIntoParagraphs() {
         logger.info("Split document into paragraphs");
         Document document = new Document(inputFile.toPath());

@@ -15,9 +15,17 @@ import java.io.File;
 import java.util.Collection;
 import java.util.Optional;
 
+/**
+ * Utils class. Generates XML document from given list of paragraphs.
+ */
 class XmlGenerator {
     private static final Logger log = LoggerFactory.getLogger(XmlGenerator.class);
 
+    /**
+     * Generates XML document from given list of paragraphs.
+     * @param sections list of paragraphs, where each paragraph is represented by its content
+     * @return XML document
+     */
     Document generateXml(Collection<String> sections) {
         log.info("Generate xml");
         Document doc = createDocument()
@@ -31,6 +39,12 @@ class XmlGenerator {
         return doc;
     }
 
+    /**
+     * Saves XML document to file.
+     * @param doc document to save
+     * @param outputFile file where document should be saved
+     * @throws TransformerException if can't transform document representation to file
+     */
     static void saveDocumentToFile(Document doc, File outputFile) throws TransformerException {
         log.info("Save document to file: " + outputFile.getName());
         DOMSource source = new DOMSource(doc);
