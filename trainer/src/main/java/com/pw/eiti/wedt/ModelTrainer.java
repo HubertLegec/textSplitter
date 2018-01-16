@@ -36,8 +36,7 @@ class ModelTrainer {
     }
 
     ModelTrainer(String inputDir, int inputSize, double errorThreshold) {
-        /*Path inputDirPath = Paths.get(inputDir);*/
-        Path inputDirPath = Paths.get(getClass().getResource("/training").getPath());
+        Path inputDirPath = Paths.get(inputDir);
         checkIsDirectory(inputDirPath);
         this.dataSetProvider = new DataSetProvider(inputDirPath);
         this.network = NetworkProvider.createNetwork(inputSize);

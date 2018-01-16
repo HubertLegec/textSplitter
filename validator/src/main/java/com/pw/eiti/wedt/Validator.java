@@ -38,12 +38,10 @@ public class Validator {
      * @param modelFile optional argument. Should be provided when network model is validated.
      */
     public Validator(String testDir, String modelFile) {
-        //Path testDirPath = Paths.get(testDir);
-        Path testDirPath = Paths.get(getClass().getResource("/test").getPath());
+        Path testDirPath = Paths.get(testDir);
         dataSetProvider = new DataSetProvider(testDirPath);
         if (modelFile != null) {
-            Path modelPath = Paths.get(getClass().getResource("/trainedModel").getPath());
-            //Path modelPath = Paths.get(modelFile);
+            Path modelPath = Paths.get(modelFile);
             BasicNetwork network = NetworkProvider.restoreSavedNetwork(modelPath.toFile().getAbsolutePath());
             networkParagraphDetector = new PerceptronParagraphDetector(network, new SentenceConditionsMapper());
         } else {
