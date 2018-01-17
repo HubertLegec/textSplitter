@@ -1,12 +1,8 @@
 apply plugin: 'application'
-apply plugin: 'com.github.johnrengelman.plugin-shadow'
 
 buildscript {
     repositories {
         jcenter()
-    }
-    dependencies {
-        classpath 'com.github.jengelman.gradle.plugins:shadow:2.0.2'
     }
 }
 
@@ -28,8 +24,4 @@ jar {
     manifest {
         attributes ('Main-Class': mainClassName)
     }
-}
-
-shadowJar {
-    archiveName = 'NetworkTrainer.jar'
 }
